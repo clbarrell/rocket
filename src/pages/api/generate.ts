@@ -52,13 +52,13 @@ export default async function handler(
     console.log("Response", completion.data.choices[0].text);
     // Temporary: To get a sense of what kinds of things people are submitting
     // no visitor tracking yet
-    const { data, error } = await supabase.from("feedback_submitted").insert([
-      {
-        feedback: feedback,
-        response: JSON.parse(completion.data.choices[0].text as string),
-        user: user,
-      },
-    ]);
+    // const { data, error } = await supabase.from("feedback_submitted").insert([
+    //   {
+    //     feedback: feedback,
+    //     response: JSON.parse(completion.data.choices[0].text as string),
+    //     user: user,
+    //   },
+    // ]);
 
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch (error: any) {
