@@ -1,10 +1,9 @@
 // pages/api/upload.js
 import type { NextApiRequest, NextApiResponse } from "next";
-import formidable, { IncomingForm } from "formidable";
+import { IncomingForm } from "formidable";
 import fs from "fs";
 import log from "@/lib/log";
 import { Configuration, OpenAIApi } from "openai";
-import FormDataNode from "formdata-node";
 import { Readable } from "node:stream";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
@@ -63,7 +62,7 @@ export default async function talk(req: NextApiRequest, res: NextApiResponse) {
         "whisper-1"
       );
       log("openai", resp.statusText, resp.data);
-      
+
       // https://js.langchain.com/docs/modules/memory/examples/buffer_memory_chat
       const chat = new ChatOpenAI({ modelName: "gpt-3.5-turbo" });
       const chatResponse = await chat.call([

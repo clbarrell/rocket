@@ -1,26 +1,8 @@
 import AudioCapture from "@/components/audioCapture";
-import { TextToSpeech } from "@/components/textToSpeech";
-import WhisperHook from "@/components/whisperHook";
-import { getBrowserID } from "@/lib/setBrowserID";
 import useAutosizeTextArea from "@/lib/useAutoResizeTextArea";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Flex,
-  Heading,
-  Input,
-  List,
-  ListItem,
-  Stack,
-  Text,
-  Textarea,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import { useRef, useState } from "react";
 
 type FeedbackResponse = {
   category: string;
