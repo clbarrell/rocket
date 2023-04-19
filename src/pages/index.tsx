@@ -1,4 +1,6 @@
 import AudioCapture from "@/components/audioCapture";
+import { TextToSpeech } from "@/components/textToSpeech";
+import WhisperHook from "@/components/whisperHook";
 import { getBrowserID } from "@/lib/setBrowserID";
 import useAutosizeTextArea from "@/lib/useAutoResizeTextArea";
 import {
@@ -28,11 +30,9 @@ type FeedbackResponse = {
 };
 
 export default function Home() {
-
   const chatInputRef = useRef<HTMLTextAreaElement>(null);
   const [chatInput, setChatInput] = useState("");
   useAutosizeTextArea(chatInputRef.current, chatInput);
-
 
   const chatData = [
     {
@@ -68,7 +68,7 @@ export default function Home() {
               <Box>
                 <AudioCapture />
               </Box>
-              <Box>{}</Box>
+              <Box></Box>
             </Container>
           </Box>
           <Box h={12} w="full">

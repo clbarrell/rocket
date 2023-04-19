@@ -100,27 +100,8 @@ a {
   text-decoration: none;
 }
 
-.recording-indicator {
-  width: 15px; /* Initial width of the div */
-  height: 15px; /* Initial height of the div */
-  border-radius: 50%; /* Make it a circle shape */
-  background-color: red; /* Set the background color to red */
-  animation: flash ease-in-out 1s infinite alternate ; /* Apply the "flash" animation with a duration of 1s and infinite loop */
-}
-
-@keyframes flash {
-  0% {
-    opacity: 0.2; /* Make the div invisible for the first half of the animation */
-    transform: scale(1); /* Reset the scale to normal */
-  }
-  100% {
-    opacity: 1; /* Make the div visible for the second half of the animation */
-    transform: scale(1.5); /* Scale the div to 120% of its original size */
-  }
-}
-
 .animate-outline {
-  animation: outlineFlash ease-in-out 1s infinite alternate ; /* Apply the "flash" animation with a duration of 1s and infinite loop */
+  animation: outlineFlash ease-in-out 600ms infinite alternate ; /* Apply the "flash" animation with a duration of 1s and infinite loop */
 }
 
 @keyframes outlineFlash {

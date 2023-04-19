@@ -1,8 +1,11 @@
 import log from "./log";
 
-export const sendBlobToApi = (blob: Blob, api: string): void => {
+export const sendBlobToApi = (
+  blob: Blob,
+  api: string,
+  callback: (text: string) => void
+): void => {
   // Determine the appropriate file type based on the Blob's MIME type
-  log("blob is", blob);
   let fileType = "";
   switch (blob.type) {
     case "audio/ogg":
@@ -33,7 +36,8 @@ export const sendBlobToApi = (blob: Blob, api: string): void => {
       return response.json();
     })
     .then((data) => {
-      console.log("Upload success:", data);
+      // SPEAK
+      callback(data.message);
     })
     .catch((error) => {
       console.error("Upload error:", error);

@@ -4,19 +4,10 @@ import formidable, { IncomingForm } from "formidable";
 import fs from "fs";
 import log from "@/lib/log";
 import { Configuration, OpenAIApi } from "openai";
-
-// const FormidableError = formidable.errors.FormidableError;
-
-// const parseForm = async (
-//   req: NextApiRequest
-// ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
-//   return new Promise(async (resolve, reject) => {
-//     resolve({
-//       files: {},
-//       fields: {},
-//     });
-//   });
-// };
+import FormDataNode from "formdata-node";
+import { Readable } from "node:stream";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 
 export default async function talk(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -48,24 +39,45 @@ export default async function talk(req: NextApiRequest, res: NextApiResponse) {
     try {
       // Read the file from the temporary location
       // const file = fs.readFileSync(files.file.path);;
-      const file = Array.isArray(files.file)
-        ? fs.readFileSync(files.file[0].filepath)
-        : fs.readFileSync(files.file.filepath);
+      const { filepath, mimetype, newFilename } = Array.isArray(files.file)
+        ? files.file[0]
+        : files.file;
+      log(filepath, mimetype, newFilename);
+
+      const fileBuffer = fs.readFileSync(filepath);
+      // Create a Blob object from the Buffer
+      const fileBlob = new Blob([fileBuffer], { type: "audio/webm" });
+
+      const fileStream = Readable.from(
+        Buffer.from(await fileBlob.arrayBuffer())
+      );
+      // @ts-expect-error Workaround till OpenAI fixed the sdk
+      fileStream.path = "audio.webm";
 
       const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
       });
       const openai = new OpenAIApi(configuration);
       const resp = await openai.createTranscription(
-        file,
+        fileStream as unknown as File,
         "whisper-1"
       );
-        
+      log("openai", resp.statusText, resp.data);
+      
+      // https://js.langchain.com/docs/modules/memory/examples/buffer_memory_chat
+      const chat = new ChatOpenAI({ modelName: "gpt-3.5-turbo" });
+      const chatResponse = await chat.call([
+        new SystemChatMessage(
+          "You are an AI called Rocket. You are talkative and give specific details from your context while keeping answers brief and use simple language, so a 7 year old would understand. It often uses humour and if it doesn't know the answer, it gives a joke. Use simple language and small words."
+        ),
+        new HumanChatMessage(
+          `Give a simple answer to this:\n${resp.data.text}`
+        ),
+      ]);
+      log(chatResponse);
 
       // Return a response indicating successful file processing
-      return res
-        .status(200)
-        .json({ message: "File uploaded and processed successfully" });
+      return res.status(200).json({ message: chatResponse.text });
     } catch (error) {
       console.error("Error processing file:", error);
       return res.status(500).json({ error: "Failed to process file" });
