@@ -70,6 +70,9 @@ const AudioCapture: React.FC = () => {
   };
 
   const stopRecording = () => {
+    if (!recording) {
+      return;
+    }
     if (mediaRecorder) {
       mediaRecorder.stop();
       mediaRecorder.stream.getTracks().forEach((track) => track.stop());
@@ -96,11 +99,12 @@ const AudioCapture: React.FC = () => {
         outlineColor={"transparent"}
         className={recording ? "animate-outline" : ""}
         transition={"all 100ms"}
-        color={recording ? "red.500" : "inherit"}
+        color={recording ? "red.500" : "green.400"}
         disabled={waitingForResponse}
         opacity={waitingForResponse ? 0.6 : 1}
         boxShadow="lg"
         isLoading={waitingForResponse}
+        rounded="xl"
       >
         <HiMicrophone />
       </Button>
