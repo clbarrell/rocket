@@ -39,7 +39,7 @@ const MessageRow = ({
 
   useTimeout(() => {
     setChangeBGColour(false);
-  }, 3000);
+  }, 5000);
 
   const UserIcon = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -66,7 +66,7 @@ const MessageRow = ({
           <Box
             px={4}
             py={3}
-            background={changeBGColour ? "green.300" : "whiteAlpha.300"}
+            background={changeBGColour ? "green.300" : "whiteAlpha.200"}
             borderBottomRadius={"xl"}
             borderTopRightRadius={who === "user" ? "none" : "xl"}
             borderTopLeftRadius={who === "ai" ? "none" : "xl"}
