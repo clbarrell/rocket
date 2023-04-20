@@ -7,13 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useAppContext } from "@/context/appContext";
 
-type FeedbackResponse = {
-  category: string;
-  included: string;
-  missing: string;
-  description: string;
-};
-
 export default function Home() {
   const chatInputRef = useRef<HTMLTextAreaElement>(null);
   const [chatInput, setChatInput] = useState("");
@@ -37,9 +30,9 @@ export default function Home() {
       </Head>
       <Box as="main">
         <Flex h={"100vh"} w={"full"} alignItems="center" flexDir={"column"}>
-          <Flex w="full" justifyContent={"center"} py={5}>
+          {/* <Flex w="full" justifyContent={"center"} py={5}>
             <Heading>Rocket 🚀</Heading>
-          </Flex>
+          </Flex> */}
           <Flex justifyContent={"center"} mb={2}>
             <Image src="/robot2.png" alt="robot" width="150" height="150" />
           </Flex>
