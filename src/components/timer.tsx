@@ -41,6 +41,7 @@ const Timer = ({
         fontSize={"2xl"}
         color={seconds > 25 ? "red.500" : seconds > 0 ? "white" : "gray.500"}
         transition="all 300ms"
+        opacity={seconds > 2 ? 0.8 : 0.2}
       >
         <Icon as={BsStopwatch} fontSize="lg" mr={2} />
         {seconds}s

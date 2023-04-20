@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import "@fontsource/spline-sans-mono";
+import { AppContextProvider } from "@/context/appContext";
 
 const colors = {
   brand: {
@@ -20,8 +21,8 @@ export const theme = extendTheme(
   { colors },
   {
     fonts: {
-      heading: `"Spline Sans Mono", monospace`,
-      body: `"Spline Sans Mono", monospace`,
+      // heading: `"Spline Sans Mono", monospace`,
+      // body: `"Spline Sans Mono", monospace`,
     },
   },
   { config }
@@ -30,7 +31,9 @@ export const theme = extendTheme(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+      <AppContextProvider>
+        <Component {...pageProps} />
+      </AppContextProvider>
     </ChakraProvider>
   );
 }

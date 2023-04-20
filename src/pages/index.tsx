@@ -1,8 +1,11 @@
 import AudioCapture from "@/components/audioCapture";
+import { Messages } from "@/components/messages";
 import useAutosizeTextArea from "@/lib/useAutoResizeTextArea";
-import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useAppContext } from "@/context/appContext";
 
 type FeedbackResponse = {
   category: string;
@@ -15,28 +18,20 @@ export default function Home() {
   const chatInputRef = useRef<HTMLTextAreaElement>(null);
   const [chatInput, setChatInput] = useState("");
   useAutosizeTextArea(chatInputRef.current, chatInput);
+  const { state } = useAppContext();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const chatData = [
-    {
-      author: "coach",
-      message: "hey dude, what does a good day look like for today?",
-    },
-    {
-      author: "user",
-      message:
-        "If I can make good progress on mapping the opportunity space. And writing my summary of our stratgey.",
-    },
-    {
-      author: "coach",
-      message: "Great. Why are you working on the strategy piece?",
-    },
-  ];
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [state.messages.length]);
 
   return (
     <>
       <Head>
-        <title>Is this good product feedback?</title>
-        <meta name="description" content="Is this good product feedback?" />
+        <title>Rocket the robot</title>
+        <meta name="description" content="Rocket robot" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -45,16 +40,24 @@ export default function Home() {
           <Flex w="full" justifyContent={"center"} py={5}>
             <Heading>Rocket 🚀</Heading>
           </Flex>
-          <Box flexGrow={2} w="full">
+          <Flex justifyContent={"center"} mb={2}>
+            <Image src="/robot2.png" alt="robot" width="150" height="150" />
+          </Flex>
+          <Box
+            flexGrow={2}
+            flexShrink={1}
+            w="full"
+            overflowY={"scroll"}
+            ref={scrollRef}
+          >
             <Container>
-              <Box>
-                <AudioCapture />
+              <Box my={6}>
+                <Messages />
               </Box>
-              <Box></Box>
             </Container>
           </Box>
-          <Box h={12} w="full">
-            <Text color="gray.400" fontSize={"sm"}></Text>
+          <Box pb={2}>
+            <AudioCapture />
           </Box>
         </Flex>
       </Box>

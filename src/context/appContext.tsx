@@ -1,44 +1,64 @@
 // File: AppContext.tsx
 
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
 // Define the shape of the state
 type State = {
-  count: number;
+  messages: { ai: string; user: string; ts: number }[];
 };
 
 // Define the type of actions that can be dispatched to update the state
 type Action =
-  | { type: "INCREMENT" }
-  | { type: "DECREMENT" }
+  | { type: "saveMessages"; message: { ai: string; user: string } }
   | { type: "unknown" };
 
 // Create the initial state
-const initialState: State = { count: 0 };
+const initialState: State = {
+  messages: [
+    {
+      user: "Hello, how are things going? How are you?",
+      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+      ts: 123456789,
+    },
+    {
+      user: "Hello, how are things going? How are you?",
+      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+      ts: 1234562789,
+    },
+    {
+      user: "Hello, how are things going? How are you?",
+      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+      ts: 1234567489,
+    },
+    {
+      user: "Hello, how are things going? How are you?",
+      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+      ts: 1234567895,
+    },
+  ],
+};
 
 // Define the reducer function
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "INCREMENT":
-      return { ...state, count: state.count + 1 };
-    case "DECREMENT":
-      return { ...state, count: state.count - 1 };
+    case "saveMessages":
+      return {
+        messages: [
+          ...state.messages,
+          { ai: action.message.ai, user: action.message.user, ts: Date.now() },
+        ],
+      };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
+type Dispatch = (action: Action) => void;
+
 // Create the context
-export const AppContext = createContext<{
-  state: State;
-  dispatch: React.Dispatch<Action>;
-  children?: React.ReactNode; // Include 'children' prop
-}>({
-  state: initialState,
-  dispatch: () => {
-    // Empty dispatch function
-  },
-});
+export const AppContext = createContext<
+  { state: State; dispatch: Dispatch } | undefined
+>(undefined);
 
 // Create the context provider component
 export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -52,3 +72,11 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({
     </AppContext.Provider>
   );
 };
+
+export function useAppContext() {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error("useCount must be used within a CountProvider");
+  }
+  return context;
+}

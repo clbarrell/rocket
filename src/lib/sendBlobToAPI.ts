@@ -3,7 +3,7 @@ import log from "./log";
 export const sendBlobToApi = (
   blob: Blob,
   api: string,
-  callback: (text: string) => void
+  callback: ({ ai, user }: { ai: string; user: string }) => void
 ): void => {
   // Determine the appropriate file type based on the Blob's MIME type
   let fileType = "";
@@ -35,9 +35,9 @@ export const sendBlobToApi = (
       }
       return response.json();
     })
-    .then((data) => {
+    .then((data: { ai: string; user: string }) => {
       // SPEAK
-      callback(data.message);
+      callback(data);
     })
     .catch((error) => {
       console.error("Upload error:", error);

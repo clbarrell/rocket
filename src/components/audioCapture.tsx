@@ -1,3 +1,4 @@
+import { useAppContext } from "@/context/appContext";
 import { useSpeech } from "@/hooks/useSpeech";
 import log from "@/lib/log";
 import { sendBlobToApi } from "@/lib/sendBlobToAPI";
@@ -23,13 +24,16 @@ const AudioCapture: React.FC = () => {
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [runTheAPIs, setRunTheAPIs] = useState(true);
   const speak = useSpeech();
+
   // TODO: Store each question and answer, and use the message thread with history
   // https://github.com/hwchase17/langchainjs/blob/6b77cbe861addc47da69cb6e25cde7f4d35fd5bb/langchain/src/chains/llm_chain.ts#L43
+  const { dispatch } = useAppContext();
 
   useEffect(() => {
-    const receivedText = (text: string) => {
+    const receivedText = ({ ai, user }: { ai: string; user: string }) => {
       setWaitingForResponse(false);
-      speak({ text });
+      speak({ text: ai });
+      dispatch({ type: "saveMessages", message: { ai, user } });
     };
 
     if (chunks.length > 0) {
@@ -41,7 +45,7 @@ const AudioCapture: React.FC = () => {
       }
       setChunks([]);
     }
-  }, [chunks, runTheAPIs, speak]);
+  }, [chunks, runTheAPIs, speak, dispatch]);
 
   const toggleRecording = () => {
     if (recording) {
@@ -93,7 +97,8 @@ const AudioCapture: React.FC = () => {
         className={recording ? "animate-outline" : ""}
         transition={"all 100ms"}
         color={recording ? "red.500" : "inherit"}
-        disabled={waitingForResponse || recording}
+        disabled={waitingForResponse}
+        opacity={waitingForResponse ? 0.6 : 1}
         boxShadow="lg"
       >
         <HiMicrophone />

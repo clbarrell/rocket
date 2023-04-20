@@ -76,7 +76,9 @@ export default async function talk(req: NextApiRequest, res: NextApiResponse) {
       log(chatResponse);
 
       // Return a response indicating successful file processing
-      return res.status(200).json({ message: chatResponse.text });
+      return res
+        .status(200)
+        .json({ ai: chatResponse.text, user: resp.data.text });
     } catch (error) {
       console.error("Error processing file:", error);
       return res.status(500).json({ error: "Failed to process file" });
