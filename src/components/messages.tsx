@@ -1,4 +1,5 @@
 import { useAppContext } from "@/context/appContext";
+import { useSpeech } from "@/hooks/useSpeech";
 import {
   Box,
   Circle,
@@ -26,6 +27,11 @@ const MessageRow = ({
   );
 
   const [showAIResponse, setShowAIResponse] = useState(false);
+
+  // const speech = useSpeech();
+  // const speak = () => {
+  //   speech({ text: message });
+  // };
 
   useTimeout(() => {
     setShowAIResponse(true);
@@ -66,6 +72,8 @@ const MessageRow = ({
             borderTopLeftRadius={who === "ai" ? "none" : "xl"}
             fontSize="lg"
             textAlign={who === "ai" ? "left" : "right"}
+            // onClick={speak}
+            transition="all 200ms"
           >
             {message}
           </Box>

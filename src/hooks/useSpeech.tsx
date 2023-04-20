@@ -8,13 +8,12 @@ export const useSpeech = () => {
 
   useEffect(() => {
     // load voices
-    log("setting event listener");
     const firstGo = window.speechSynthesis.getVoices();
-    console.log("first go", firstGo.length);
+    log("Loading voices", firstGo.length);
 
     window.speechSynthesis.onvoiceschanged = () => {
-      log("set voices onChange");
       const realVoices = window.speechSynthesis.getVoices();
+      log("Loading voices", realVoices.length);
       setVoices(realVoices);
     };
   }, []);
@@ -36,6 +35,7 @@ export const useSpeech = () => {
       speechUtterance.text = text;
       window.speechSynthesis.speak(speechUtterance);
     } else {
+      log("voices", voices.length);
       console.error("Speech synthesis is not supported in this browser.");
     }
   };

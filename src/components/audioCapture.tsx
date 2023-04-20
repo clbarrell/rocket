@@ -100,6 +100,7 @@ const AudioCapture: React.FC = () => {
         disabled={waitingForResponse}
         opacity={waitingForResponse ? 0.6 : 1}
         boxShadow="lg"
+        isLoading={waitingForResponse}
       >
         <HiMicrophone />
       </Button>
