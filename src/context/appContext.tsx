@@ -12,30 +12,27 @@ type Action =
   | { type: "saveMessages"; message: { ai: string; user: string } }
   | { type: "unknown" };
 
+const messageList = [
+  {
+    user: "Hello, how are things going? How are you?",
+    ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+    ts: 123456789,
+  },
+  {
+    user: "Hello, how are things going? How are you?",
+    ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+    ts: 1234562789,
+  },
+  {
+    user: "Hello, how are things going? How are you?",
+    ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
+    ts: 1234567489,
+  },
+];
+
 // Create the initial state
 const initialState: State = {
-  messages: [
-    {
-      user: "Hello, how are things going? How are you?",
-      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
-      ts: 123456789,
-    },
-    {
-      user: "Hello, how are things going? How are you?",
-      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
-      ts: 1234562789,
-    },
-    {
-      user: "Hello, how are things going? How are you?",
-      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
-      ts: 1234567489,
-    },
-    {
-      user: "Hello, how are things going? How are you?",
-      ai: "Hi there! I don't have feelings like humans, but I'm working perfectly fine. Thanks for asking! How can I assist you toda",
-      ts: 1234567895,
-    },
-  ],
+  messages: process.env.NODE_ENV === "production" ? [] : messageList,
 };
 
 // Define the reducer function
